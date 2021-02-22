@@ -108,4 +108,88 @@ cols <- s_dass_fun(cols)
 write.table(cols, "Dass_outcomes_TP1.txt", sep = "\t")
 
 ##########
+############################################
+## CBI
+
+
+cols <- tp1[,49:67]
+
+#cols <- as.data.frame(lapply(cols, function(x) { revalue(x, c("Always" = 100, "Often" = 75, "Sometimes" = 50, "Seldom" = 25, "Never" = 0)) }))
+# question 10 is inverted: cols <-  revalue(cols$C10, c(100 = 0, 75 = 25, 25 = 75, 0 = 100))
+#write.table(cols, "CBI_converted.txt", sep = "\t")
+
+#df <- read.csv("Book7.csv", header = TRUE)
+#df2 <- as.data.frame(lapply(df, function(x) { revalue(x, c("Always" = 100, "Often" = 75, "Sometimes" = 50, "Seldom" = 25, "Never" = 0)) }))
+#write.table(df2, "extra_cbi.txt", sep = "\t")
+
+#personal burnout
+p_cbi <- c("C1", "C2", "C3", "C4", "C5", "C6")
+cols$p_cbi_val <- (rowSums(cols[,p_cbi]))/6
+
+
+#scoring
+# score based on the values, and create column for this 
+#personal
+
+p_cbi_fun <- function(df) {
+  for (i in 1:nrow(df)) {
+    
+    df[i,"P_cbi_score"] <- ifelse(df[i,"p_cbi_val"] <= 50, "Low", 
+                                   ifelse(df[i,"p_cbi_val"] <= 74, "Moderate",
+                                          ifelse(df[i,"p_cbi_val"]<= 99, "High",
+                                                 ifelse(df[i,"p_cbi_val"] <= 100, "Severe"))))
+    
+  }
+  return(df)
+}
+###
+cols <- p_cbi_fun(cols)
+
+# work related burnout
+w_cbi <- c("C7", "C8", "C9", "C10", "C11", "C12", "C13")
+cols$w_cbi_val <- (rowSums(cols[,w_cbi]))/7
+
+
+#scoring
+# score based on the values, and create column for this 
+
+w_cbi_fun <- function(df) {
+  for (i in 1:nrow(df)) {
+    
+    df[i,"w_cbi_score"] <- ifelse(df[i,"w_cbi_val"] <= 50, "Low", 
+                                  ifelse(df[i,"w_cbi_val"] <= 74, "Moderate",
+                                         ifelse(df[i,"w_cbi_val"]<= 99, "High",
+                                                ifelse(df[i,"w_cbi_val"] <= 100, "Severe"))))
+    
+  }
+  return(df)
+}
+###
+cols <- w_cbi_fun(cols)
+
+# client related burnout
+c_cbi <- c("C14", "C15", "C16", "C17", "C18", "C19")
+cols$c_cbi_val <- (rowSums(cols[,c_cbi]))/6
+
+
+#scoring
+# score based on the values, and create column for this 
+
+c_cbi_fun <- function(df) {
+  for (i in 1:nrow(df)) {
+    
+    df[i,"c_cbi_score"] <- ifelse(df[i,"c_cbi_val"] <= 50, "Low", 
+                                  ifelse(df[i,"c_cbi_val"] <= 74, "Moderate",
+                                         ifelse(df[i,"c_cbi_val"]<= 99, "High",
+                                                ifelse(df[i,"c_cbi_val"] <= 100, "Severe"))))
+    
+  }
+  return(df)
+}
+###
+cols <- c_cbi_fun(cols)
+
+## 
+write.table(cols, "CBI_Outcomes_TP1.txt", sep = "\t")
+  
 
