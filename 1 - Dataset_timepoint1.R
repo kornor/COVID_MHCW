@@ -17,8 +17,6 @@ library(ggplot2)
 tp1 <- read.csv("Data_tp1_2.csv", header = TRUE, stringsAsFactors = TRUE, na.strings="")
 
 
-
-
 #################################################
 ### DASS
 
